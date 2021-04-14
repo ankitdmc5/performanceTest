@@ -3,8 +3,10 @@ package com.kit.efficiency.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
@@ -26,7 +28,7 @@ public class MyTestController {
 
     @GetMapping("/test")
     public String test() throws InterruptedException {
-        Thread.sleep((int)((Math.random() + 1)*200));
+        Thread.sleep((int) ((Math.random() + 1) * 200));
         /*System.out.println(Thread.currentThread());
         final Runtime runtime = Runtime.getRuntime();
         System.out.println("freeMemory: " + (runtime.freeMemory() / (1024*1024)) + "MB");
@@ -37,23 +39,24 @@ public class MyTestController {
     }
 
     @GetMapping("/testPerformance")
-    public AtomicInteger testPerformance() throws InterruptedException {
-        atomicInteger.set(1);
+    public AtomicInteger testPerformance(@RequestHeader String host) throws InterruptedException {
+        atomicInteger.set(-1);
         List<Thread> threadList = new ArrayList<>(100);
-        for (int i = 0; i< 1500; i++){
+
+        for (int i = 0; i < 10; i++) {
             //String s = new String(new char[100000000]).replace('\0','a');
             Thread t = new Thread(() -> {
                 this.restTemplate
-                        .exchange("http://localhost:9000/test", HttpMethod.GET, HttpEntity.EMPTY, String.class);
+                        .exchange("http://" + host + "/test", HttpMethod.GET, HttpEntity.EMPTY, String.class);
             });
             threadList.add(t);
-            System.out.println(t);
+            //System.out.println(host);
         }
-        //Thread.sleep(7000);
-        for (Thread t:
-             threadList) {
+        for (Thread t :
+                threadList) {
             t.start();
         }
+        threadList.get(threadList.size() - 1).join();
         ResponseEntity<String> temp = this.restTemplate
                 .exchange("http://localhost:9000/test", HttpMethod.GET, HttpEntity.EMPTY, String.class);
         return atomicInteger;
