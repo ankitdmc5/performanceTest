@@ -34,8 +34,9 @@ public class MyTestController {
         for (int i =0; i < 500000 ; i++){
             l.add(UUID.randomUUID().toString());
         }
+        Long t1 = System.currentTimeMillis();
         Collections.sort(l);
-        System.out.println(l);
+        System.out.println(System.currentTimeMillis()-t1);
         System.out.println("cores: " + runtime.availableProcessors());
         System.out.println("freeMemory: " + (runtime.freeMemory() / (1024*1024)) + "MB");
         System.out.println("totalMemory: " + (runtime.totalMemory() / (1024*1024)) + "MB");
