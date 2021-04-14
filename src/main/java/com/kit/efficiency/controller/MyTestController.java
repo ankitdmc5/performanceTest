@@ -58,7 +58,7 @@ public class MyTestController {
         }
         threadList.get(threadList.size() - 1).join();
         ResponseEntity<String> temp = this.restTemplate
-                .exchange("http://localhost:9000/test", HttpMethod.GET, HttpEntity.EMPTY, String.class);
+                .exchange("http://" + host + "/test", HttpMethod.GET, HttpEntity.EMPTY, String.class);
         return atomicInteger;
     }
 
