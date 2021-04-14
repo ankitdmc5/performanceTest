@@ -29,36 +29,33 @@ public class MyTestController {
     @GetMapping("/test")
     public String test() throws InterruptedException {
         Thread.sleep((int) ((Math.random() + 1) * 200));
-        /*System.out.println(Thread.currentThread());
+        System.out.println(Thread.currentThread());
         final Runtime runtime = Runtime.getRuntime();
         System.out.println("freeMemory: " + (runtime.freeMemory() / (1024*1024)) + "MB");
         System.out.println("totalMemory: " + (runtime.totalMemory() / (1024*1024)) + "MB");
-        System.out.println("maxMemory: " + (runtime.maxMemory() / (1024*1024)) + "MB");*/
+        System.out.println("maxMemory: " + (runtime.maxMemory() / (1024*1024)) + "MB");
         atomicInteger.getAndIncrement();
         return "YOLO";
     }
 
     @GetMapping("/testPerformance")
     public AtomicInteger testPerformance(@RequestHeader String host) throws InterruptedException {
-        atomicInteger.set(-1);
+        atomicInteger.set(0);
         List<Thread> threadList = new ArrayList<>(100);
 
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 10; i++) {
             //String s = new String(new char[100000000]).replace('\0','a');
             Thread t = new Thread(() -> {
                 this.restTemplate
                         .exchange("http://" + host + "/test", HttpMethod.GET, HttpEntity.EMPTY, String.class);
             });
             threadList.add(t);
-            //System.out.println(host);
         }
         for (Thread t :
                 threadList) {
             t.start();
         }
         threadList.get(threadList.size() - 1).join();
-        ResponseEntity<String> temp = this.restTemplate
-                .exchange("http://" + host + "/test", HttpMethod.GET, HttpEntity.EMPTY, String.class);
         return atomicInteger;
     }
 
