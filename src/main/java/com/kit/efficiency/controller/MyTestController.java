@@ -43,7 +43,7 @@ public class MyTestController {
         atomicInteger.set(-1);
         List<Thread> threadList = new ArrayList<>(100);
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 1000; i++) {
             //String s = new String(new char[100000000]).replace('\0','a');
             Thread t = new Thread(() -> {
                 this.restTemplate
