@@ -10,8 +10,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @RestController
@@ -31,6 +30,12 @@ public class MyTestController {
         Thread.sleep((int) ((Math.random() + 1) * 200));
         System.out.println(Thread.currentThread());
         final Runtime runtime = Runtime.getRuntime();
+        List<String> l = new ArrayList<>();
+        for (int i =0; i < 500000 ; i++){
+            l.add(UUID.randomUUID().toString());
+        }
+        Collections.sort(l);
+        System.out.println(l);
         System.out.println("cores: " + runtime.availableProcessors());
         System.out.println("freeMemory: " + (runtime.freeMemory() / (1024*1024)) + "MB");
         System.out.println("totalMemory: " + (runtime.totalMemory() / (1024*1024)) + "MB");
