@@ -31,6 +31,7 @@ public class MyTestController {
         Thread.sleep((int) ((Math.random() + 1) * 200));
         System.out.println(Thread.currentThread());
         final Runtime runtime = Runtime.getRuntime();
+        System.out.println("cores: " + runtime.availableProcessors());
         System.out.println("freeMemory: " + (runtime.freeMemory() / (1024*1024)) + "MB");
         System.out.println("totalMemory: " + (runtime.totalMemory() / (1024*1024)) + "MB");
         System.out.println("maxMemory: " + (runtime.maxMemory() / (1024*1024)) + "MB");
