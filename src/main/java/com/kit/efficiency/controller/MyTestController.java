@@ -37,13 +37,14 @@ public class MyTestController {
         }
         Long t1 = System.currentTimeMillis();
         l.parallelStream().sorted().collect(Collectors.toList());
-        System.out.println(System.currentTimeMillis()-t1);
+        final long t2 = System.currentTimeMillis() - t1;
+        System.out.println(t2);
         System.out.println("cores: " + runtime.availableProcessors());
         System.out.println("freeMemory: " + (runtime.freeMemory() / (1024*1024)) + "MB");
         System.out.println("totalMemory: " + (runtime.totalMemory() / (1024*1024)) + "MB");
         System.out.println("maxMemory: " + (runtime.maxMemory() / (1024*1024)) + "MB");
         atomicInteger.getAndIncrement();
-        return "YOLO";
+        return t2+" ms";
     }
 
     @GetMapping("/testPerformance")
