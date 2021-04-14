@@ -12,6 +12,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 @RestController
 public class MyTestController {
@@ -31,11 +32,11 @@ public class MyTestController {
         System.out.println(Thread.currentThread());
         final Runtime runtime = Runtime.getRuntime();
         List<String> l = new ArrayList<>();
-        for (int i =0; i < 500000 ; i++){
+        for (int i =0; i < 900000 ; i++){
             l.add(UUID.randomUUID().toString());
         }
         Long t1 = System.currentTimeMillis();
-        Collections.sort(l);
+        l.parallelStream().sorted().collect(Collectors.toList());
         System.out.println(System.currentTimeMillis()-t1);
         System.out.println("cores: " + runtime.availableProcessors());
         System.out.println("freeMemory: " + (runtime.freeMemory() / (1024*1024)) + "MB");
